@@ -1,0 +1,29 @@
+device: mps
+seed: 6027
+pack: artifacts/demographic.npz
+original_split: artifacts/search_demographic/split.json
+fold_directory: research_v2/runs/ranking_ablation
+prior_validation: research_v5/runs/validation_preserved_baseline
+variants:
+- multiscale_attention
+epochs: 80
+patience: 20
+steps_per_epoch: 24
+episode_bank: 24
+episode_identities: 8
+episode_anchors:
+- 8
+- 16
+- 24
+learning_rate: 0.002
+weight_decay: 0.02
+hidden_dim: 24
+dropout: 0.1
+ranking_weight: 1.0
+ranking_margin: 0.2
+ranking_temperature: 0.2
+consistency_weight: 0.02
+support_dropout: 0.2
+residual_weight: 0.005
+kernel_regularization: 0.005
+max_correction: 3.0

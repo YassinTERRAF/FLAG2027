@@ -1,0 +1,15 @@
+{
+  "wavlm": {
+    "repo": "microsoft/wavlm-base-plus-sv",
+    "revision": "feb593a6c23c1cc3d9510425c29b0a14d2b07b1e"
+  },
+  "audio_age": {
+    "repo": "audeering/wav2vec2-large-robust-6-ft-age-gender",
+    "revision": "a681b720dafd12b9dd7b6d13fb437c7b6b197fd3"
+  },
+  "face_age": {
+    "repo": "nateraw/vit-age-classifier",
+    "revision": "4b5acc345d9692c3ff4f45d250531afd3a3da0ef"
+  },
+  "official_baseline_commit": "4871141c383ad8d3709493c1df134cb4793fa584"
+}

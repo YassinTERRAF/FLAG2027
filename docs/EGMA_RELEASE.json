@@ -1,0 +1,31 @@
+{
+  "implementation": "research_v6",
+  "record_kind": "historical_user_reported_platform_result",
+  "submission_id_from_screenshot": 1057368,
+  "reported_mean_eer_percent": 3.41,
+  "platform_archive_digest_available": false,
+  "verified_organizer_exception": null,
+  "artifacts": {
+    "submissions_egma.zip": "df54f938a607ade86c6edad715db64214ee54d1f623c8676312a4069c9e578a2",
+    "submissions.zip": "f8973012144375dbab12db4d0a37b379ef038f23313c907836a5d5d93a31250e",
+    "artifacts/final/system.json": "cda6a932193b7b3118ccb710f37fe408cf1e75289d48e331f8f961b3a06f1ac6",
+    "requirements-lock.txt": "8aef84274caa9d2761cae7cb7433f6c99967a741c03ea9b6355e1e251110874b",
+    "research_v6/runs/final/best.pt": "3e5be3edd851d216e26f07a6d1e69ba928ef995e3a343ebec3d96e9be7fd38eb",
+    "research_v6/runs/final/final_config.json": "af8bb09e713010163ad615342d1a83699b5aea587c51f7cc5e6e954c00ec61d5",
+    "research_v6/runs/final/manifest.json": "8a2de45eaae92c93da49901587c8e8b78995a7b324ce4fb54704db3084fdd464",
+    "research_v6/runs/submission/manifest.json": "35e29b3bc6fffbe508c2e1e3a33b1ed099440d9350183d7f189590db9c299890",
+    "research_v6/runs/submission/scores_and_attention.npz": "3eca17dd79056abc62bbdb4e164ede2f026bb5ee160258c14b70add994ac4d8e",
+    "research_v5/runs/evaluation_features_preserved_baseline/pool.npz": "693c8974b62701e3971023c3cc0b273d1974118cb4b594d406a57471b217fe8b",
+    "research_v5/runs/evaluation_features_preserved_baseline/manifest.json": "fc693e9a6bf6f30eacafe108f47225ba078f47618be2a1cdea70acc1f0c18e4f",
+    "research_v5/runs/NONCOMPLIANT_submission/research_scores_and_clusters.npz": "60db64098fc4e4605fd6b752889abbb2385eee3efa4de6ac1e0f44b06bbf0982",
+    "artifacts/demographic.npz": "e0ed6e3053a02135f57907e74c61f7db01ee302c4dac30e2ad4741d6e5328806",
+    "artifacts/search_demographic/split.json": "d97a78c1fc13a277a81bbab8cdd67b482c11415ce4ef676566baca5f69905358",
+    "research_v6/runs/architecture_no_rank/summary.json": "01326bb2e7832050211398ebb9fb903ffa331e1e5e35046e9054c2772d7a6aba"
+  },
+  "removed_other_or_duplicate_artifacts": {
+    "artifacts/submission/submission.zip": "9a6234329e160e876ec7683c04094a55771b243dff333c4ea6f2bf81fd298b81",
+    "research_v6/runs/submission/submissions.zip": "df54f938a607ade86c6edad715db64214ee54d1f623c8676312a4069c9e578a2",
+    "research_v7/runs/final/system.pt": "4bc0a96cc5d866bdf651789f2c2aafd5300b894a361682b0b39ce90c2053aca9",
+    "research_v7/runs/submission_compliant/submissions.zip": "816d3048106acb7039b9daf6eed26025aacaad83bf342778c4d472eb0a30a083"
+  }
+}

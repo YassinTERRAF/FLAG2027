@@ -1,0 +1,14 @@
+device: mps
+seed: 5027
+pack: artifacts/demographic.npz
+original_split: artifacts/search_demographic/split.json
+fold_directory: research_v2/runs/ranking_ablation
+system: artifacts/final/system.json
+evaluation_root: data/evaluation
+validation_anchors_per_identity: 16
+face_thresholds: [0.2, 0.35, 0.5]
+voice_thresholds: [0.1, 0.25, 0.4]
+pool_weights: [0.0, 1.0]
+graph_weights: [0.0, 0.25, 1.0]
+linkage: average
+graph_pseudocount: 0.5

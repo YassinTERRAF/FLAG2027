@@ -1,0 +1,18 @@
+{
+  "flag_eligible": false,
+  "hidden_evaluation_eer_known": false,
+  "archive_format_valid": true,
+  "zip_crc_valid": true,
+  "score_sign_and_values_verified": true,
+  "trials": 2326,
+  "cells": 4,
+  "unchanged_original_checkpoints": 4,
+  "unchanged_original_sources_and_registries": 18,
+  "original_zip_sha256": "9a6234329e160e876ec7683c04094a55771b243dff333c4ea6f2bf81fd298b81",
+  "new_archive_sha256": "f8973012144375dbab12db4d0a37b379ef038f23313c907836a5d5d93a31250e",
+  "maximum_original_baseline_difference": 3.576642090274973e-07,
+  "full_runner": "passed; reports/research_v5_reproduction_corrected.log",
+  "pip_check": "passed",
+  "upload_performed": false,
+  "tests": "40 passed, including CPU and MPS"
+}

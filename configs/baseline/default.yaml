@@ -1,0 +1,26 @@
+pack: artifacts/demographic.npz
+original_split: artifacts/search_demographic/split.json
+device: mps
+seed: 3027
+outer_folds: 3
+inner_validation_fraction: 0.25
+epochs: 60
+patience: 12
+steps_per_epoch: 30
+identities_per_gender: 6
+samples_per_identity: 4
+learning_rate: 0.0005
+weight_decay: 0.02
+embedding_dim: 96
+block_dim: 48
+context_dim: 24
+dropout: 0.3
+block_dropout: 0.25
+temperature: 0.1
+ranking_margin: 0.15
+proxy_weight: 0.2
+contrastive_weight: 0.2
+relation_weight: 0.05
+gender_weight: 0.1
+gender_score_weight: 0.25
+variants: [control_v1, block_rank, block_rank_relation]

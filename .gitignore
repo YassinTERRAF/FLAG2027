@@ -1,0 +1,11 @@
+/data/
+/release/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.DS_Store
+reports/*.log
+docs/sources/
+submissions*.zip
+sub_score_v4_*.txt
+scores_and_attention.npz
