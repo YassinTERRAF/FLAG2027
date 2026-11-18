@@ -1,4 +1,4 @@
-# FLAG 2027 ·  EGMA 
+# FLAG 2027 -   EGMA 
 
 Evidence-Gated Multiscale Association (EGMA) matches a face and a voice using learned pairwise similarity and gated score correction. The architecture figure shows the shared feature and matching pipeline, the graph-based training procedure, and a proposed independent-trial inference path.
 
