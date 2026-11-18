@@ -8,7 +8,6 @@ This repository contains EGMA’s architecture, training scripts, configurations
 
 ![EGMA architecture overview showing shared feature extraction and matching, graph-based training, and proposed independent-trial inference](docs/EGMA_Architecture.png)
 
-*Panel A shows the shared feature and mapper pipeline. Panel B shows the  graph-based head and its training objective. Panel C illustrates the proposed pair-only inference path.*
 
 1. **Frozen feature extraction.** EGMA represents faces using organizer-provided VGGFace features, FaceNet features from a model trained on VGGFace2, and a ViT age representation. For voices, it combines organizer-provided ECAPA features, Microsoft WavLM Base Plus speaker embeddings, and an audEERING Wav2Vec2 age/gender representation. The public encoders remain frozen, and the release registries pin their versions and weights.
 
