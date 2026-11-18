@@ -4,7 +4,7 @@ Evidence-Gated Multiscale Association (EGMA) matches a face and a voice using le
 
 This repository contains EGMA’s architecture, training scripts, configurations, and frozen graph-based scoring code. The team’s leaderboard record shows **3.41% mean EER** for CodaBench submission **1057368**, associated with the frozen scorer.
 
-## Architecture and training
+## The Proposed EGMA Architecture
 
 ![EGMA architecture overview showing shared feature extraction and matching, graph-based training, and proposed independent-trial inference](docs/EGMA_Architecture.png)
 
