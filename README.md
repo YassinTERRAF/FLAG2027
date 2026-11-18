@@ -21,7 +21,7 @@ The graph-based EGMA head trains on episodes drawn from 56 English identities. T
 
 ## Evaluation inference
 
-**Proposed independent-trial path (panel C).** The diagram shows one face–voice pair entering the shared feature and mapper pipeline. In this design, the correction would use only the current pair’s features and fixed parameters learned from permitted training data. The final similarity would be exported directly with its sign reversed, so a lower score indicates a stronger match. Panel C describes a design proposal.
+**Proposed independent-trial inference (panel C).** A single face–voice pair passes through the shared feature extraction and mapper pipeline. Any score correction would use only that pair’s features and fixed parameters learned from permitted training data, without graph priors or evidence from other trials. The final similarity would be exported with its sign reversed, so lower scores indicate stronger matches. This path is a design proposal, distinct from the archived graph-based scorer.
 
 
 ## Reproduce the release
