@@ -64,11 +64,11 @@ python -m flag_egma --help
 
 ### Verify the frozen release
 
-Download both checkpoint ZIPs from the [checkpoint release](https://github.com/YassinTERRAF/FLAG2027/releases/tag/review-checkpoints-1057368) and extract them at the repository root, preserving the original `release/` paths.
+These steps restore the exact inputs for the frozen release associated with submission **1057368**.
 
-Restore the pinned upstream encoder files, the authorized `data/` directory, and the exact feature pools and archived score files required by the verifier. Also restore the original `requirements-lock.txt` and the release manifest at `docs/EGMA_RELEASE.json`. All paths are relative to the repository root; package installation uses `requirements.txt`.
-
-Keep original graph-based assets and independent-trial assets separately identified so that evaluation graph artifacts do not enter the independent scorer.
+1. Download `egma-evaluation-checkpoints.zip` and `egma-validation-checkpoints.zip` from the [public checkpoint release](https://github.com/YassinTERRAF/FLAG2027/releases/tag/review-checkpoints-1057368).
+2. Sign in with the invited GitHub account, accept the collaborator invitation, and download `egma-organizer-inputs-1057368.zip` from the [private reviewer release](https://github.com/YassinTERRAF/FLAG2027-review/releases/tag/review-inputs-1057368). This archive contains the pinned encoder files, cached features, and archived score references.
+3. Extract all three ZIPs directly into the source checkout, alongside `README.md`. Keep the `release/` paths already present in each archive. Place the official challenge data under `data/` using the original directory structure. Keep the tracked `requirements-lock.txt` and `docs/EGMA_RELEASE.json` in place.
 
 Before validation or evaluation, run:
 
