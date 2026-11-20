@@ -28,9 +28,6 @@ A separate pair-conditioned inference module is trained using face–voice descr
 
 **Independent-trial inference (panel C).** A single face–voice pair passes through the frozen feature extraction and trained mapper ensemble. The resulting pair representation enters a pair-conditioned correction module, which uses that pair’s features and fixed learned parameters. The final similarity is exported with its sign reversed, so lower scores indicate stronger matches.
 
-In the reported implementation, all learned parameters, ensemble weights, and fixed preprocessing statistics are determined using training data and training-data validation before evaluation. Progress/evaluation data are not used for training, adaptation, calibration, or model selection. The evaluation pathway does not construct graphs, clusters, or relationships between trials, estimate evaluation-set statistics, or apply post-hoc score normalization. A trial’s score is invariant to adding, removing, or reordering unrelated trials, apart from numerical tolerances.
-
-This describes the independent-trial implementation reported by the author. The original graph-based release and its leaderboard result remain distinct from this pathway.
 
 ## Reproduce the release
 
