@@ -64,13 +64,21 @@ python -m flag_egma --help
 
 ### Verify the frozen release
 
-Restore the authorized `data/` and `release/` bundles, the original `requirements-lock.txt`, and the release manifest at `docs/EGMA_RELEASE.json` before running the checksum check. These paths are relative to the repository root. Package installation uses `requirements.txt`. Original graph-based assets and independent-trial assets must be identified separately so that evaluation graph artifacts do not enter the independent scorer.
+Download both checkpoint ZIPs from the [checkpoint release](https://github.com/YassinTERRAF/FLAG2027/releases/tag/review-checkpoints-1057368) and extract them at the repository root, preserving the original `release/` paths.
+
+Restore the pinned upstream encoder files, the authorized `data/` directory, and the exact feature pools and archived score files required by the verifier. Also restore the original `requirements-lock.txt` and the release manifest at `docs/EGMA_RELEASE.json`. All paths are relative to the repository root; package installation uses `requirements.txt`.
+
+Keep original graph-based assets and independent-trial assets separately identified so that evaluation graph artifacts do not enter the independent scorer.
+
+Before validation or evaluation, run:
 
 ```bash
 python -m flag_egma verify
 ```
 
-The supplied original `validate` and `reproduce` configurations require PyTorch MPS. Run those configurations on an Apple Silicon Mac. The Windows and Linux instructions cover package installation. On macOS, confirm that the active environment can access MPS before running validation or scoring. [PyTorch MPS documentation](https://docs.pytorch.org/docs/2.6/notes/mps.html)
+The supplied original `validate` and `reproduce` configurations require PyTorch MPS. Run those configurations on an Apple Silicon Mac. The Windows and Linux instructions cover package installation.
+
+On macOS, confirm that the active environment can access MPS before running validation or scoring. See the [PyTorch MPS documentation](https://docs.pytorch.org/docs/2.6/notes/mps.html).
 
 ```bash
 python -c "import torch; print(torch.backends.mps.is_available())"
