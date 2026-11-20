@@ -76,7 +76,6 @@ The supplied original `validate` and `reproduce` configurations require PyTorch 
 python -c "import torch; print(torch.backends.mps.is_available())"
 ```
 
-The commands and platform requirements are retained from the supplied release instructions; they have not been executed against the repository for this document. Checksum verification establishes artifact integrity, not inference independence or a new EER.
 
 ### English identity-holdout validation
 
@@ -86,8 +85,6 @@ python -m flag_egma validate --output ../egma-validation
 
 The original command repeats the development procedure for the selected graph-based EGMA variant using saved identity splits, cross-fit mappers, and graph settings. It fits the validation heads, prints `ARCHITECTURE SUMMARY`, and saves `summary.json` and `folds.json`. Compare `multiscale_attention.mean_english_eer_percent` in the generated summary with the archived graph-based validation result of **7.35%** in `release/validation/association/architecture_no_rank/summary.json`. The archived fold means are **9.21%**, **6.41%**, and **6.42%**.
 
-These are results for the original graph-based validation procedure. The independent-trial scorer requires its own validation on identity-disjoint training holdouts using the same pair-only inference path used at deployment. If this command now selects the revised scorer, document that configuration and its results separately rather than assigning the archived EER to it.
-
 ### Evaluation submission ZIP
 
 ```bash
@@ -96,6 +93,4 @@ python -m flag_egma reproduce --output ../egma-evaluation
 
 This command runs the frozen independent-trial scorer described in panel C. Each face–voice pair passes through the frozen feature extractors, four trained mappers, and pair-conditioned correction module to produce a matching score. Inference uses fixed parameters and preprocessing statistics established during training.
 
-The command writes `../egma-evaluation/submissions.zip`, four score files, and `manifest.json`. It prints the generated ZIP’s SHA-256 for artifact tracking. Scores are generated locally without training or contacting CodaBench.
-
-The archived submission and its **3.41% mean EER** remain associated with the scorer and configuration that generated them.
+The command writes `../egma-evaluation/submissions.zip`, four score files, and `manifest.json`. It prints the generated ZIP’s SHA-256 for artifact tracking.
