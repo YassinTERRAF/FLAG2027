@@ -1,28 +1,34 @@
-# FLAG 2027 -   EGMA 
+# FLAG 2027 - EGMA
 
-Evidence-Gated Multiscale Association (EGMA) matches a face and a voice using learned pairwise similarity and gated score correction. The architecture figure shows the shared feature and matching pipeline, the graph-based training procedure, and a proposed independent-trial inference path.
+Evidence-Gated Multiscale Association (EGMA) matches a face and a voice using learned pairwise similarity and gated score correction. The architecture figure shows the shared feature and matching pipeline, graph-guided training, and a proposed independent-trial inference path.
 
-This repository contains EGMA’s architecture, training scripts, configurations, and frozen graph-based scoring code. The team’s leaderboard record shows **3.41% mean EER** for CodaBench submission **1057368**, associated with the frozen scorer.
+This repository contains EGMA’s architecture, training scripts, configurations, and frozen graph-based scoring code. The team’s leaderboard record shows **3.41% mean EER** for CodaBench submission **1057368**, associated with the frozen graph-based scorer.
 
 ## The Proposed EGMA Architecture
 
-![EGMA architecture overview showing shared feature extraction and matching, graph-based training, and proposed independent-trial inference](docs/EGMA_Architecture.png)
+![EGMA architecture showing shared representations, graph-guided training, and proposed independent-trial inference](docs/EGMA_Architecture.png)
 
+*Panel A constructs the shared pair representation. Panel B shows graph-guided learning on training episodes. Panel C illustrates the proposed independent-trial inference path.*
 
-1. **Frozen feature extraction.** EGMA represents faces using organizer-provided VGGFace features, FaceNet features from a model trained on VGGFace2, and a ViT age representation. For voices, it combines organizer-provided ECAPA features, Microsoft WavLM Base Plus speaker embeddings, and an audEERING Wav2Vec2 age/gender representation. The public encoders remain frozen, and the release registries pin their versions and weights.
+1. **Frozen feature extraction.** EGMA represents faces using organizer-provided VGGFace features, FaceNet features from a model trained on VGGFace2, and a ViT age representation. For voices, it combines organizer-provided ECAPA features, Microsoft WavLM Base Plus speaker embeddings, and an audEERING Wav2Vec2 age/gender representation. The public encoders remain frozen, and the release registries pin their versions and weights. These modality-specific representations feed the mapper ensemble shown in panel A.
 
-2. **Pairwise matching.** Four trained face–voice mappers project the features into a shared 128-dimensional space. The base score averages their cosine-based scores, which include a fixed gender-posterior agreement term for `no_gender` trials. The head’s six-value pair descriptor contains the base score, mean cosine similarity, mean gender-posterior agreement, mean posterior entropy for each modality, and the protocol flag.
+2. **Pairwise matching.** Four trained face–voice mappers project the features into a shared 128-dimensional space. EGMA averages their cosine-based scores to form the base similarity. In the `no_gender` configuration, each mapper includes a fixed gender-posterior agreement term. The head’s six-value pair descriptor contains the base score, mean cosine similarity, mean gender-posterior agreement, mean posterior entropy for each modality, and the protocol flag. Together, the base score and descriptor form the pair representation passed to the subsequent training or inference pathway.
 
-3. **Multiscale graph evidence.** In each training episode, one token represents hard cluster co-occurrence and four tokens represent soft face–voice similarity kernels. Three kernels use FaceNet and WavLM at different bandwidths, and the fourth uses VGGFace and ECAPA. The head excludes the query’s exact media pair from its own support. Each token records observed support, expected support under independent face and voice affinities, their log ratio, the support degree for each modality, and a reliability measure.
+3. **Multiscale graph evidence.** Panel B constructs evidence within training episodes. One token represents hard cluster co-occurrence, and four tokens represent soft face–voice similarity kernels. Three kernels use FaceNet and WavLM at different bandwidths. The fourth uses VGGFace and ECAPA. The query’s exact media pair, including duplicate copies, is excluded from its support. Each token records observed support, expected support under independent face and voice affinities, their log ratio, the support degree for each modality, and a reliability measure.
 
-4. **Gated score correction.** The pair descriptor supplies the attention query, and the five evidence tokens supply its keys and values. The head combines the attended evidence with the pair representation to predict a bounded residual. A gate scales that residual using the reliability of the available support. The graph-based score adds the base pair score, the hard-cluster log-ratio term, and the gated residual. The archived graph-based EGMA head adds **3,540 parameters**.
+4. **Gated score correction.** In the graph-guided head, the pair descriptor supplies the attention query, while the evidence tokens supply keys and values. The attended evidence and pair representation determine a bounded residual. A reliability gate scales this residual according to the available support. The graph-based score combines the base pair score, the hard-cluster log-ratio prior, and the gated residual. The graph-guided head contains **3,540 parameters**.
 
-The graph-based EGMA head trains on episodes drawn from 56 English identities. Their training eligibility must be confirmed against the official dataset designation. Each fitting episode uses a cross-fit mapper trained on separate identities. The original 14 reserved identities are excluded from the head’s development and refit. The selected loss gives equal weight to verification in the `gender` and `no_gender` protocols. A consistency term encourages the residual to stay stable when training removes some supporting edges. Additional penalties discourage large residuals and large departures from the initial kernel bandwidths. The ranking loss weight is zero, and the archived head was refit for 23 epochs. No audio encoder was fine-tuned or adapted using Bengali speech.
+The graph-based EGMA head trains on episodes drawn from 56 English identities. Each fitting episode uses a cross-fit mapper trained on separate identities. The original 14 reserved identities are excluded from the head’s development and refit. The selected loss gives equal weight to verification in the `gender` and `no_gender` protocols. A support-drop consistency term encourages the residual to remain stable when supporting training edges are removed. Additional penalties discourage large residuals and large departures from the initial kernel bandwidths. The ranking loss weight is zero, and the graph-guided training head was refit for 23 epochs. No audio encoder was fine-tuned or adapted using Bengali speech.
+
+During training, EGMA constructs graph evidence from training identities. The graph-guided head scores each pair with full and randomly reduced support, sharing parameters across both passes. The training objective combines protocol-balanced binary verification with a Smooth L1 consistency loss that encourages the reduced-support correction to match the detached full-support correction. The pair descriptor supplies the attention query, while graph evidence tokens supply the keys and values.
+
+The training objective updates the graph-guided head directly. The frozen scorer loads that same head and feeds it graph evidence computed from the pooled evaluation trials.
 
 ## Evaluation inference
 
-**Proposed independent-trial inference (panel C).** A single face–voice pair passes through the shared feature extraction and mapper pipeline. Any score correction would use only that pair’s features and fixed parameters learned from permitted training data, without graph priors or evidence from other trials. The final similarity would be exported with its sign reversed, so lower scores indicate stronger matches. This path is a design proposal, distinct from the archived graph-based scorer.
+**Proposed independent-trial inference (panel C).** A single face–voice pair would pass through the frozen feature extraction and trained mapper ensemble. The correction would depend only on that pair’s features and fixed parameters learned from permitted training data. This path is a design proposal.
 
+**Frozen graph-based inference.** The scorer for the archived submission loads the pooled, unlabeled evaluation features, clusters face and voice embeddings separately, and computes hard and soft graph evidence from other evaluation trials. The checkpoint weights stay fixed during evaluation. The scorer exports negative similarity, so lower scores indicate stronger matches. [Inference code](src/association/infer.py) · [Graph evidence](src/association/evidence.py)
 
 ## Reproduce the release
 
@@ -65,7 +71,7 @@ Restore the authorized `data/` and `release/` bundles, the original `requirement
 python -m flag_egma verify
 ```
 
-The supplied `validate` and `reproduce` configurations require PyTorch MPS. Run those commands on an Apple Silicon Mac. The Windows and Linux instructions cover package installation. On macOS, confirm that the active environment can access MPS before running validation or scoring. [PyTorch MPS documentation](https://docs.pytorch.org/docs/2.6/notes/mps.html)
+The supplied original `validate` and `reproduce` configurations require PyTorch MPS. Run those configurations on an Apple Silicon Mac. The Windows and Linux instructions cover package installation. On macOS, confirm that the active environment can access MPS before running validation or scoring. [PyTorch MPS documentation](https://docs.pytorch.org/docs/2.6/notes/mps.html)
 
 ```bash
 python -c "import torch; print(torch.backends.mps.is_available())"
@@ -77,7 +83,7 @@ python -c "import torch; print(torch.backends.mps.is_available())"
 python -m flag_egma validate --output ../egma-validation
 ```
 
-The command repeats the development procedure for the selected EGMA variant using the saved identity splits, cross-fit mappers, and graph settings. It fits the validation heads, prints `ARCHITECTURE SUMMARY`, and saves `summary.json` and `folds.json`. Compare `multiscale_attention.mean_english_eer_percent` in the generated summary with the archived graph-based validation result of **7.35%** in `release/validation/association/architecture_no_rank/summary.json`. The archived fold means are **9.21%**, **6.41%**, and **6.42%**.
+The original command repeats the development procedure for the selected graph-based EGMA variant using saved identity splits, cross-fit mappers, and graph settings. It fits validation heads, prints `ARCHITECTURE SUMMARY`, and saves `summary.json` and `folds.json`. Compare `multiscale_attention.mean_english_eer_percent` in the generated summary with the archived graph-based validation result of **7.35%** in `release/validation/association/architecture_no_rank/summary.json`. The archived fold means are **9.21%**, **6.41%**, and **6.42%**.
 
 ### Evaluation submission ZIP
 
@@ -85,4 +91,6 @@ The command repeats the development procedure for the selected EGMA variant usin
 python -m flag_egma reproduce --output ../egma-evaluation
 ```
 
-This command runs the frozen graph-based scorer with its archived head, four mappers, and verified evaluation feature pool. It writes `../egma-evaluation/submissions.zip`, four score files, and `manifest.json`, then compares the generated ZIP’s SHA-256 with the archived ZIP.
+This command runs the frozen graph-based scorer with its archived head, four mappers, and verified evaluation feature pool. It writes `../egma-evaluation/submissions.zip`, four score files, and `manifest.json`, then compares the generated ZIP’s SHA-256 with the archived ZIP. Scores are generated locally without training or contacting CodaBench.
+
+The archived submission and its **3.41% mean EER** remain associated with the scorer and configuration that generated them.
